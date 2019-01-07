@@ -3,7 +3,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.matsim</groupId>
-	<artifactId>matsim-example-project</artifactId>
+	<artifactId>ABMT2018_Sun_Bicudo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<name>MATSim example project</name>
@@ -29,7 +29,7 @@
 			<!-- This is the matsim "core": -->
 			<groupId>org.matsim</groupId>
 			<artifactId>matsim</artifactId>
-			<version>0.10.0</version>
+			<version>0.10.1</version>
 		</dependency>
 
 		<dependency>
@@ -45,7 +45,7 @@
 			<groupId>org.matsim</groupId>
 			<artifactId>matsim</artifactId>
 			<type>test-jar</type>
-			<version>0.10.0</version>
+			<version>0.10.1</version>
 			<scope>test</scope>
 		</dependency>
 
