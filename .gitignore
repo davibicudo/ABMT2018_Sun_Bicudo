@@ -14,6 +14,8 @@ hs_err_pid*
 /.classpath
 /target/
 /output/
+/simulation_output/
+/original-input-data/simulation_output/
 /bin/
 
 /.idea/

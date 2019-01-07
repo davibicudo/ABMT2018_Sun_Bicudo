@@ -3,7 +3,7 @@
 <config>
     <module name="controler" >
         <param name="firstIteration" value="0" />
-        <param name="outputDirectory" value="simulation_output" />
+        <param name="outputDirectory" value="../simulation_output" />
         <param name="overwriteFiles" value="deleteDirectoryIfExists" />
 		<param name="routingAlgorithmType" value="FastAStarLandmarks" />
 
@@ -46,11 +46,11 @@
 
 
     <module name="network" >
-        <param name="inputNetworkFile" value="ile_de_france_network_simplified.xml.gz" />
+        <param name="inputNetworkFile" value="../simulation_input/network_closedRoads.xml.gz" />
     </module>
 
     <module name="plans" >
-        <param name="inputPlansFile" value="ile_de_france_population_diluted_caronly.xml.gz" />
+        <param name="inputPlansFile" value="../original-input-data/ile_de_france_population_diluted_caronly.xml.gz" />
     </module>
 
     <module name="planCalcScore">
@@ -79,19 +79,6 @@
             <param name="scoringThisActivityAtAll" value="false" />
         </parameterset>
     </module>
-    
-    <module name="TimeAllocationMutator" >
-
-                <!-- Default:true; Defines whether time mutation changes an activity's duration. -->
-                <param name="mutationAffectsDuration" value="true" />
-
-                <!-- Default:1800.0; Defines how many seconds a time mutation can maximally shift a time. -->
-                <param name="mutationRange" value="1800.0" />
-
-                <!-- false; Use individual settings for each subpopulation. If enabled but no settings are found, regular settings are uses as fallback. -->
-                <param name="useIndividualSettingsForSubpopulations" value="false" />
-     </module>
-    
 
     <module name="strategy">
 		<param name="maxAgentPlanMemorySize" value="3" />
@@ -102,9 +89,11 @@
         </parameterset>
 
         <parameterset type="strategysettings">
-            <param name="strategyName" value="ReRoute" /> <!-- TimeAllocationMutator_ReRoute -->
+            <param name="strategyName" value="ReRoute" />
             <param name="weight" value="0.1" />
         </parameterset>
-                
+        
+        
+        
     </module>
 </config>
