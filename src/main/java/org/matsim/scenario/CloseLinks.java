@@ -1,4 +1,4 @@
-package org.matsim.network;
+package org.matsim.scenario;
 
 import java.util.HashSet;
 
@@ -7,6 +7,7 @@ import org.matsim.api.core.v01.Scenario;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.core.config.ConfigUtils;
+import org.matsim.core.network.algorithms.NetworkCleaner;
 import org.matsim.core.network.io.NetworkReaderMatsimV1;
 import org.matsim.core.network.io.NetworkWriter;
 import org.matsim.core.scenario.ScenarioUtils;
@@ -16,6 +17,7 @@ public class CloseLinks {
 	public static void main(String[] args) {
 		String path = "original-input-data/ile_de_france_network_simplified.xml.gz";
 		String output = "simulation_input/network_closedRoads.xml.gz";
+		String cleanedOutput = "simulation_input/network_closedRoads_cleaned.xml.gz";
 		
 		Scenario scenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
 		new NetworkReaderMatsimV1(scenario.getNetwork()).readFile(path);
@@ -42,6 +44,8 @@ public class CloseLinks {
 		}
 		
 		new NetworkWriter(network).write(output);
+		new NetworkCleaner().run(network);
+		new NetworkWriter(network).write(cleanedOutput);
 	}
 
 }
