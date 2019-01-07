@@ -15,6 +15,7 @@ hs_err_pid*
 /target/
 /output/
 /simulation_output/
+/simulation_output_WTime/
 /original-input-data/simulation_output/
 /bin/
 
