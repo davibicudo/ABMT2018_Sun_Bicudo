@@ -1,0 +1,24 @@
+> summary(linkStatsBuffer_baseline)
+     LINK             HRS7-8avg       HRS17-18avg     TRAVELTIME7-8avg   TRAVELTIME17-18avg
+ Length:2822        Min.   : 0.000   Min.   : 0.000   Min.   :  0.0803   Min.   :   0.473  
+ Class :character   1st Qu.: 0.200   1st Qu.: 1.600   1st Qu.:  4.9883   1st Qu.:   7.238  
+ Mode  :character   Median : 2.000   Median : 4.200   Median :  9.9023   Median :  16.477  
+                    Mean   : 4.559   Mean   : 7.559   Mean   : 18.2811   Mean   :  89.220  
+                    3rd Qu.: 5.350   3rd Qu.: 7.800   3rd Qu.: 19.3965   3rd Qu.:  52.621  
+                    Max.   :47.200   Max.   :75.000   Max.   :628.5862   Max.   :5496.444  
+> summary(linkStatsBuffer_closedRoads)
+     LINK             HRS7-8avg      HRS17-18avg    TRAVELTIME7-8avg   TRAVELTIME17-18avg
+ Length:2728        Min.   : 0.00   Min.   : 0.00   Min.   :  0.0803   Min.   :   0.384  
+ Class :character   1st Qu.: 0.20   1st Qu.: 1.60   1st Qu.:  5.0000   1st Qu.:   7.066  
+ Mode  :character   Median : 2.00   Median : 4.20   Median : 10.0000   Median :  16.409  
+                    Mean   : 4.32   Mean   : 6.68   Mean   : 19.5031   Mean   : 102.315  
+                    3rd Qu.: 5.40   3rd Qu.: 7.20   3rd Qu.: 19.7226   3rd Qu.:  55.014  
+                    Max.   :41.40   Max.   :60.60   Max.   :747.8333   Max.   :6352.599  
+> summary(linkStatsBuffer_WTime)
+     LINK             HRS7-8avg      HRS17-18avg     TRAVELTIME7-8avg    TRAVELTIME17-18avg
+ Length:2728        Min.   : 0.00   Min.   : 0.000   Min.   :   0.2302   Min.   :   0.213  
+ Class :character   1st Qu.: 0.20   1st Qu.: 1.600   1st Qu.:   5.0752   1st Qu.:   7.112  
+ Mode  :character   Median : 2.00   Median : 4.000   Median :  10.8589   Median :  16.911  
+                    Mean   : 4.54   Mean   : 6.415   Mean   :  25.6347   Mean   :  98.384  
+                    3rd Qu.: 5.60   3rd Qu.: 7.200   3rd Qu.:  21.6078   3rd Qu.:  53.799  
+                    Max.   :45.60   Max.   :59.800   Max.   :1370.7333   Max.   :6178.892  

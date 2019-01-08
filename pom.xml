@@ -26,27 +26,15 @@
 
 	<dependencies>
 		<dependency>
-			<!-- This is the matsim "core": -->
 			<groupId>org.matsim</groupId>
 			<artifactId>matsim</artifactId>
 			<version>0.10.1</version>
 		</dependency>
 
 		<dependency>
-			<!-- Include the JUnit testing library.  Not transitive. -->
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<!--MATSim test infrastructure.  Not transitive.-->
-			<groupId>org.matsim</groupId>
-			<artifactId>matsim</artifactId>
-			<type>test-jar</type>
-			<version>0.10.1</version>
-			<scope>test</scope>
+			<groupId>ch.ethz.matsim</groupId>
+			<artifactId>baseline_scenario</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>

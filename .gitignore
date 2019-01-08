@@ -19,5 +19,12 @@ hs_err_pid*
 /original-input-data/simulation_output/
 /bin/
 
+/analysis/simulation_output_baseline/*
+/analysis/simulation_output_closedRoads/*
+/analysis/simulation_output_WTime/*
+/analysis/.Rproj*
+
 /.idea/
 *.iml
+
+*.DS_Store*
