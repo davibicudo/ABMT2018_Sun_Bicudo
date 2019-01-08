@@ -22,7 +22,7 @@ hs_err_pid*
 /analysis/simulation_output_baseline/*
 /analysis/simulation_output_closedRoads/*
 /analysis/simulation_output_WTime/*
-/analysis/.Rproj*
+/analysis/.R*
 
 /.idea/
 *.iml
