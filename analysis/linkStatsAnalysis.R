@@ -1,5 +1,5 @@
 
-pacman::p_load("data.table", "sp", "rgdal")
+pacman::p_load("data.table", "sp", "rgdal", "ggplot2", "dplyr")
 
 # read link stats
 linkStats_baseline <- fread("gzip -dc simulation_output_baseline/ITERS/it.100/100.linkstats.txt.gz")
@@ -7,7 +7,7 @@ linkStats_closedRoads <- fread("gzip -dc simulation_output_closedRoads/ITERS/it.
 linkStats_WTime <- fread("gzip -dc simulation_output_WTime/ITERS/it.100/100.linkstats.txt.gz")
 
 # keep only relevant columns
-cols <- c("LINK", "HRS7-8avg", "HRS17-18avg", "TRAVELTIME7-8avg", "TRAVELTIME17-18avg")
+cols <- c("LINK", names(linkStats_baseline)[grepl("avg", names(linkStats_baseline))])
 linkStats_baseline <- linkStats_baseline[,..cols]
 linkStats_closedRoads <- linkStats_closedRoads[,..cols]
 linkStats_WTime <- linkStats_WTime[,..cols]
@@ -26,11 +26,38 @@ linkIdsBuffer_baseline <- linksBuffer@data$ID
 linkIdsBuffer_other <- subset(linksBuffer@data, !(ID %in% linksClosed$ID), select = "ID")$ID
 
 # filter stats for links within buffer
-linkStatsBuffer_baseline <- linkStats_baseline[LINK %in% linkIdsBuffer_baseline,]
-linkStatsBuffer_closedRoads <- linkStats_closedRoads[LINK %in% linkIdsBuffer_other,]
-linkStatsBuffer_WTime <- linkStats_WTime[LINK %in% linkIdsBuffer_other,]
+linkStatsBuffer_baseline <- linkStats_baseline[LINK %in% linkIdsBuffer_baseline,!"LINK", with=FALSE]
+linkStatsBuffer_closedRoads <- linkStats_closedRoads[LINK %in% linkIdsBuffer_other,!"LINK", with=FALSE]
+linkStatsBuffer_WTime <- linkStats_WTime[LINK %in% linkIdsBuffer_other,!"LINK", with=FALSE]
 
-# stats on links
-summary(linkStatsBuffer_baseline)
-summary(linkStatsBuffer_closedRoads)
-summary(linkStatsBuffer_WTime)
+# stats on links (boxplot)
+## Outliers removed to improve visualization.
+MPH <- c(linkStatsBuffer_baseline$`HRS7-8avg`, linkStatsBuffer_closedRoads$`HRS7-8avg`, linkStatsBuffer_WTime$`HRS7-8avg`)
+APH <- c(linkStatsBuffer_baseline$`HRS17-18avg`, linkStatsBuffer_closedRoads$`HRS17-18avg`, linkStatsBuffer_WTime$`HRS17-18avg`)
+OPH <- c(linkStatsBuffer_baseline$`HRS10-11avg`, linkStatsBuffer_closedRoads$`HRS10-11avg`, linkStatsBuffer_WTime$`HRS10-11avg`)
+NTH <- c(linkStatsBuffer_baseline$`HRS21-22avg`, linkStatsBuffer_closedRoads$`HRS21-22avg`, linkStatsBuffer_WTime$`HRS21-22avg`)
+labs <- c("Morning-peak hour (7-8h)", "Afternoon-peak hour (17-18h)", "Off-peak hour (10-11h)", "Night-time hour (21-22h)")
+DF <- data.frame(
+  x=c(MPH, APH, OPH, NTH),
+  y=rep(labs, each=length(MPH)),
+  z=c(rep("baseline", nrow(linkStatsBuffer_baseline)), 
+      rep("closed roads", nrow(linkStatsBuffer_closedRoads)), 
+      rep("departure innovation", nrow(linkStatsBuffer_WTime))),
+  stringsAsFactors = T
+)
+DF$z <- factor(DF$z, levels = c("departure innovation", "closed roads", "baseline"), ordered=T)
+ggplot(DF, aes(y, x, fill=z)) + 
+  geom_boxplot(outlier.shape=NA) +
+  scale_y_continuous(limits = quantile(DF$x, c(0.1, 0.89))) + 
+  scale_x_discrete(limits = rev(labs)) +
+  coord_flip() + 
+  theme_minimal() +
+  theme(axis.title.x=element_blank(), axis.title.y=element_blank(), 
+        legend.title=element_blank(), legend.position = "bottom") +
+  guides(fill=guide_legend(reverse=TRUE))
+
+# hourly averages
+hourlyAvg <- data.frame(baseline=colMeans(linkStatsBuffer_baseline), 
+                        closedRoads=colMeans(linkStatsBuffer_closedRoads), 
+                        WTime=colMeans(linkStatsBuffer_WTime))
+write.csv(hourlyAvg, file="linkAverages.csv")
