@@ -30,7 +30,13 @@ linkStatsBuffer_baseline <- linkStats_baseline[LINK %in% linkIdsBuffer_baseline,
 linkStatsBuffer_closedRoads <- linkStats_closedRoads[LINK %in% linkIdsBuffer_other,!"LINK", with=FALSE]
 linkStatsBuffer_WTime <- linkStats_WTime[LINK %in% linkIdsBuffer_other,!"LINK", with=FALSE]
 
-# stats on links (boxplot)
+# hourly averages
+hourlyAvg <- data.frame(baseline=colMeans(linkStatsBuffer_baseline), 
+                        closedRoads=colMeans(linkStatsBuffer_closedRoads), 
+                        WTime=colMeans(linkStatsBuffer_WTime))
+write.csv(hourlyAvg, file="linkAverages.csv")
+
+# volume stats on links (boxplot)
 ## Outliers removed to improve visualization.
 MPH <- c(linkStatsBuffer_baseline$`HRS7-8avg`, linkStatsBuffer_closedRoads$`HRS7-8avg`, linkStatsBuffer_WTime$`HRS7-8avg`)
 APH <- c(linkStatsBuffer_baseline$`HRS17-18avg`, linkStatsBuffer_closedRoads$`HRS17-18avg`, linkStatsBuffer_WTime$`HRS17-18avg`)
@@ -45,19 +51,48 @@ DF <- data.frame(
       rep("departure innovation", nrow(linkStatsBuffer_WTime))),
   stringsAsFactors = T
 )
-DF$z <- factor(DF$z, levels = c("departure innovation", "closed roads", "baseline"), ordered=T)
+#DF$z <- factor(DF$z, levels = c("departure innovation", "closed roads", "baseline"), ordered=T)
 ggplot(DF, aes(y, x, fill=z)) + 
   geom_boxplot(outlier.shape=NA) +
   scale_y_continuous(limits = quantile(DF$x, c(0.1, 0.89))) + 
-  scale_x_discrete(limits = rev(labs)) +
-  coord_flip() + 
+  scale_x_discrete(limits = labs) +
+  #coord_flip() + 
   theme_minimal() +
-  theme(axis.title.x=element_blank(), axis.title.y=element_blank(), 
-        legend.title=element_blank(), legend.position = "bottom") +
-  guides(fill=guide_legend(reverse=TRUE))
+  ylab("Link volume (1% scenario)") +
+  theme(axis.title.x=element_blank(), 
+        legend.title=element_blank(), legend.position = "bottom",
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        text = element_text(size=16),
+        plot.margin=margin(2,2,2,2,"cm")) +
+  guides(fill=guide_legend(reverse=F))
 
-# hourly averages
-hourlyAvg <- data.frame(baseline=colMeans(linkStatsBuffer_baseline), 
-                        closedRoads=colMeans(linkStatsBuffer_closedRoads), 
-                        WTime=colMeans(linkStatsBuffer_WTime))
-write.csv(hourlyAvg, file="linkAverages.csv")
+# speed stats on links (boxplot)
+## Outliers removed to improve visualization.
+MPH2 <- c(linkStatsBuffer_baseline$`TRAVELTIME7-8avg`, linkStatsBuffer_closedRoads$`TRAVELTIME7-8avg`, linkStatsBuffer_WTime$`TRAVELTIME7-8avg`)
+APH2 <- c(linkStatsBuffer_baseline$`TRAVELTIME17-18avg`, linkStatsBuffer_closedRoads$`TRAVELTIME17-18avg`, linkStatsBuffer_WTime$`TRAVELTIME17-18avg`)
+OPH2 <- c(linkStatsBuffer_baseline$`TRAVELTIME10-11avg`, linkStatsBuffer_closedRoads$`TRAVELTIME10-11avg`, linkStatsBuffer_WTime$`TRAVELTIME10-11avg`)
+NTH2 <- c(linkStatsBuffer_baseline$`TRAVELTIME21-22avg`, linkStatsBuffer_closedRoads$`TRAVELTIME21-22avg`, linkStatsBuffer_WTime$`TRAVELTIME21-22avg`)
+labs <- c("Morning-peak hour (7-8h)", "Afternoon-peak hour (17-18h)", "Off-peak hour (10-11h)", "Night-time hour (21-22h)")
+DF2 <- data.frame(
+  x=c(MPH2, APH2, OPH2, NTH2),
+  y=rep(labs, each=length(MPH2)),
+  z=c(rep("baseline", nrow(linkStatsBuffer_baseline)), 
+      rep("closed roads", nrow(linkStatsBuffer_closedRoads)), 
+      rep("departure innovation", nrow(linkStatsBuffer_WTime))),
+  stringsAsFactors = T
+)
+#DF2$z <- factor(DF2$z, levels = c("departure innovation", "closed roads", "baseline"), ordered=T)
+ggplot(DF2, aes(y, x, fill=z)) + 
+  geom_boxplot(outlier.shape=NA) +
+  scale_y_continuous(limits = quantile(DF$x, c(0.1, 0.89))) + 
+  scale_x_discrete(limits = labs) +
+  #coord_flip() + 
+  theme_minimal() +
+  ylab("Link speed (m/s)") +
+  theme(axis.title.x=element_blank(), 
+        legend.title=element_blank(), legend.position = "bottom",
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        text = element_text(size=16),
+        plot.margin=margin(2,2,2,2,"cm")) +
+  guides(fill=guide_legend(reverse=F))
+
