@@ -26,7 +26,7 @@ linkIdsBuffer_baseline <- linksBuffer@data$ID
 linkIdsBuffer_other <- subset(linksBuffer@data, !(ID %in% linksClosed$ID), select = "ID")$ID
 
 # filter stats for links within buffer
-linkStatsBuffer_baseline <- linkStats_baseline[LINK %in% linkIdsBuffer_baseline,!"LINK", with=FALSE]
+linkStatsBuffer_baseline <- linkStats_baseline[LINK %in% linkIdsBuffer_other,!"LINK", with=FALSE]
 linkStatsBuffer_closedRoads <- linkStats_closedRoads[LINK %in% linkIdsBuffer_other,!"LINK", with=FALSE]
 linkStatsBuffer_WTime <- linkStats_WTime[LINK %in% linkIdsBuffer_other,!"LINK", with=FALSE]
 
